@@ -1,8 +1,10 @@
 package com.ifbhotels.ebmanagement.models.structures;
 
+import com.ifbhotels.ebmanagement.enums.DeviceState;
 import com.ifbhotels.ebmanagement.models.electricaldevices.AC;
 import com.ifbhotels.ebmanagement.models.electricaldevices.Light;
 
+import java.util.List;
 import java.util.Objects;
 
 public class MainCorridor extends Corridor {

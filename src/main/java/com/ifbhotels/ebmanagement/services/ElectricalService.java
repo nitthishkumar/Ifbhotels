@@ -8,12 +8,17 @@ import com.ifbhotels.ebmanagement.models.electricaldevices.Light;
 import com.ifbhotels.ebmanagement.services.storage.StorageService;
 import com.ifbhotels.ebmanagement.services.storage.StorageServiceFactory;
 
+import static com.ifbhotels.ebmanagement.enums.StorageServiceType.SIMPLE_STORAGE_TYPE;
+
 public class ElectricalService {
 
-    private final StorageService storageService =
-            StorageServiceFactory.getStorageService(Constants.SIMPLE_STORAGE_TYPE);
+    private final StorageService storageService;
 
-    public Light getLight (int lightId,
+    public ElectricalService() {
+        storageService = StorageServiceFactory.getStorageService(SIMPLE_STORAGE_TYPE);
+    }
+
+    public Light getLight(int lightId,
                            DeviceState deviceState) {
         return new Light.LightBuilder()
                 .setId(lightId)
@@ -22,7 +27,7 @@ public class ElectricalService {
                 .build();
     }
 
-    public AC getAC (int acID,
+    public AC getAC(int acID,
                      DeviceState deviceState) {
         return new AC.ACBuilder()
                 .setId(acID)
@@ -31,23 +36,23 @@ public class ElectricalService {
                 .build();
     }
 
-    public void turnOnAC (AC ac)
+    public void turnOnAC(AC ac)
             throws ConsumptionLimitExceededException {
         storageService.addConsumptionCost(Constants.AC_CONSUMPTION);
         ac.setDeviceState(DeviceState.ON);
     }
 
-    public void turnOffAC (AC ac) {
+    public void turnOffAC(AC ac) {
         ac.setDeviceState(DeviceState.OFF);
     }
 
-    public void turnOnLight (Light light)
+    public void turnOnLight(Light light)
             throws ConsumptionLimitExceededException {
         storageService.addConsumptionCost(Constants.LIGHT_CONSUMPTION);
         light.setDeviceState(DeviceState.ON);
     }
 
-    public void turnOffLight (Light light) {
+    public void turnOffLight(Light light) {
         light.setDeviceState(DeviceState.OFF);
     }
 }

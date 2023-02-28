@@ -1,11 +1,12 @@
 package com.ifbhotels.ebmanagement.controllers;
 
-import com.ifbhotels.ebmanagement.enums.DeviceState;
 import com.ifbhotels.ebmanagement.exceptions.ConsumptionLimitExceededException;
 import com.ifbhotels.ebmanagement.models.data.Movement;
-import com.ifbhotels.ebmanagement.models.electricaldevices.AC;
 import com.ifbhotels.ebmanagement.models.structures.*;
 import com.ifbhotels.ebmanagement.services.HotelService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class HotelController {
 
@@ -27,26 +28,29 @@ public class HotelController {
         return hotelService.getHotel();
     }
 
-    public void turnOnAC (Movement movement) {
+    public void turnOnAC(Movement movement) {
         try {
             hotelService.turnOnAC(movement);
         } catch (ConsumptionLimitExceededException e) {
-
+            System.out.println(e + ". Controlling power consumption");
+            controlPowerConsumption(movement);
         }
     }
 
-    public void turnOnLight (Movement movement) {
+    public void turnOnLight(Movement movement) {
         try {
             hotelService.turnOnLight(movement);
         } catch (ConsumptionLimitExceededException e) {
+            controlPowerConsumption(movement);
+            System.out.println(e + ". Controlling power consumption");
         }
     }
 
-    public void turnOffLight (Movement movement) {
+    public void turnOffLight(Movement movement) {
         hotelService.turnOffLight(movement);
     }
 
-    public void turnOffAC (Movement movement) {
+    public void turnOffAC(Movement movement) {
         hotelService.turnOffAC(movement);
     }
 
@@ -54,32 +58,36 @@ public class HotelController {
         return hotelService.getFloor(floorId);
     }
 
-    public MainCorridor getMainCorridor (Floor floor, int mainCorridorId) {
+    public MainCorridor getMainCorridor(Floor floor, int mainCorridorId) {
         return hotelService.getMainCorridor(floor, mainCorridorId);
     }
 
-    public SubCorridor getSubCorridor (Floor floor, int subCorridorId) {
-        return hotelService.getSubCorridor(floor,subCorridorId);
+    public SubCorridor getSubCorridor(Floor floor, int subCorridorId) {
+        return hotelService.getSubCorridor(floor, subCorridorId);
     }
 
-    public void controlPowerConsumption (Movement movement) {
-        while (!hotelService.isConsumptionWithinLimits()) {
-            for (Floor floor : hotelService.getHotel().getFloorList()) {
-                if (floor.getId() != movement.getFloor().getId() ) {
-                    controlPowerConsumptionOn(floor);
-                    if (hotelService.isConsumptionWithinLimits()) return;
-                }
-            }
-        }
+    public List<Floor> idleFloors(Movement movement) {
+        return getFloorList()
+                .stream()
+                .filter(floor -> !floor.equals(movement.getFloor()))
+                .collect(Collectors.toList());
     }
 
-    public void controlPowerConsumptionOn (Floor floor) {
-        for (Corridor corridor : floor.getCorridorList()) {
-            if (corridor instanceof SubCorridor) controlPowerConsumptionOn(corridor);
-        }
+    public void controlPowerConsumption(Movement movement) {
+        idleFloors(movement)
+                .forEach(this::controlPowerConsumptionOnFloor);
     }
 
-    public void controlPowerConsumptionOn (Corridor corridor) {
+    private List<Floor> getFloorList() {
+        return hotelService.getHotel().getFloorList();
+    }
+
+    public void controlPowerConsumptionOnFloor(Floor floor) {
+        floor.getCorridorList()
+                .forEach(this::controlPowerConsumptionOnCorridor);
+    }
+
+    public void controlPowerConsumptionOnCorridor(Corridor corridor) {
         hotelService.reduceConsumptionCostFor(corridor.getAC());
         if (hotelService.isConsumptionWithinLimits() ) return;
         hotelService.reduceConsumptionCostFor(corridor.getLight());

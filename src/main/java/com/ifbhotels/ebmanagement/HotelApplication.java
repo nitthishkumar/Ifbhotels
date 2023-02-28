@@ -37,7 +37,7 @@ public class HotelApplication {
 
     private int subCorridorsPerFloor;
 
-    private void parseSensorInput (String sensorInput)
+    private void parseSensorInput(String sensorInput)
             throws InvalidInputException, NumberFormatException {
         String[] inputWords = sensorInput.split(" ");
         Movement movement = null;
@@ -47,8 +47,7 @@ public class HotelApplication {
             break;
             case "Main" : mainCorridorsPerFloor = Integer.parseInt(inputWords[inputWords.length - 1]);
             break;
-            case "Sub" :
-                subCorridorsPerFloor = Integer.parseInt(inputWords[inputWords.length - 1]);
+            case "Sub" : subCorridorsPerFloor = Integer.parseInt(inputWords[inputWords.length - 1]);
                 hotelController.createHotel(floors, mainCorridorsPerFloor, subCorridorsPerFloor);
                 System.out.println(hotelController.getHotel());
             break;
@@ -81,7 +80,7 @@ public class HotelApplication {
         System.out.println(hotelController.getHotel());
     }
 
-    private Movement parseSensorInputToMovement (String[] input) {
+    private Movement parseSensorInputToMovement(String[] input) {
         Floor floor = null;
         Corridor corridor = null;
         for (int i = 0; i < input.length; i++) {

@@ -3,7 +3,6 @@ package com.ifbhotels.ebmanagement.models.electricaldevices;
 import com.ifbhotels.ebmanagement.enums.DeviceState;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 
 import java.util.Objects;
 
@@ -46,8 +45,10 @@ public class AC extends ElectricalDevice {
 
         @NonNull @Getter
         private int id;
+
         @NonNull @Getter
         private DeviceState deviceState;
+
         @NonNull @Getter
         private int consumptionCost;
 

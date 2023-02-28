@@ -1,7 +1,10 @@
 package com.ifbhotels.ebmanagement.constants;
 
 import com.ifbhotels.ebmanagement.enums.DeviceState;
-import com.ifbhotels.ebmanagement.services.storage.SimpleStorageService;
+import com.ifbhotels.ebmanagement.models.structures.Corridor;
+import com.ifbhotels.ebmanagement.models.structures.MainCorridor;
+
+import java.util.function.Predicate;
 
 public class Constants {
 
@@ -17,6 +20,6 @@ public class Constants {
 
     public static final int SUB_CORRIDOR_ALLOWANCE = 10;
 
-    public static final String SIMPLE_STORAGE_TYPE = "SimpleStorageService";
+    public static final Predicate<Corridor> IS_MAIN_CORRIDOR = corridor -> corridor instanceof MainCorridor;
 
 }

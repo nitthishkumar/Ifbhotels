@@ -26,12 +26,12 @@ public interface StorageService {
 
     SubCorridor getSubCorridor(Floor floor, int subCorridorId);
 
-    int getTotalMainCorridors();
+    int totalMainCorridors();
 
-    int getTotalSubCorridors();
+    int totalSubCorridors();
 
     boolean isConsumptionWithinLimits();
 
-    int getMaxConsumptionAllowed();
+    int maxConsumptionAllowed();
 
 }

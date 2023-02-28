@@ -30,62 +30,81 @@ public class SimpleStorageService implements StorageService {
     }
 
     @Override
-    public MainCorridor getMainCorridor (Floor floor, int mainCorridorId) {
+    public MainCorridor getMainCorridor(Floor floor, int mainCorridorId) {
         for (Corridor corridor : floor.getCorridorList())
-            if (corridor instanceof MainCorridor && corridor.getId() == mainCorridorId)
+            if (isMainCorridor(corridor) && corridor.getId() == mainCorridorId)
                 return (MainCorridor) corridor;
         throw new NullPointerException("Main Corridor with ID " + mainCorridorId + " not found");
     }
 
     @Override
-    public SubCorridor getSubCorridor (Floor floor, int subCorridorId) {
+    public SubCorridor getSubCorridor(Floor floor, int subCorridorId) {
         for (Corridor corridor : floor.getCorridorList())
-            if (corridor instanceof SubCorridor && corridor.getId() == subCorridorId)
+            if (isSubCorridor(corridor) && corridor.getId() == subCorridorId)
                 return (SubCorridor) corridor;
         throw new NullPointerException("Sub Corridor with ID " + subCorridorId + " not found");
     }
 
     @Override
-    public boolean isConsumptionWithinLimits () {
-        return totalPowerConsumed <= getMaxConsumptionAllowed();
+    public boolean isConsumptionWithinLimits() {
+        return getTotalPowerConsumed() <= maxConsumptionAllowed();
     }
 
     @Override
     public int addConsumptionCost(int consumptionCost)
             throws ConsumptionLimitExceededException {
-        totalPowerConsumed += consumptionCost;
-        if (totalPowerConsumed + consumptionCost > getMaxConsumptionAllowed())
-            throw new ConsumptionLimitExceededException();
+        if (getTotalPowerConsumed() + consumptionCost > maxConsumptionAllowed())
+            throw new ConsumptionLimitExceededException("Consumption limit exceeded by " +
+                    (getTotalPowerConsumed() - maxConsumptionAllowed()) + " units");
+        setTotalPowerConsumed(getTotalPowerConsumed() + consumptionCost);
         return totalPowerConsumed;
     }
 
     @Override
-    public int reduceConsumptionCost (int reducedCost) {
-        totalPowerConsumed -= reducedCost;
+    public int reduceConsumptionCost(int reducedCost) {
+        setTotalPowerConsumed(Math.max(0, getTotalPowerConsumed() - reducedCost) );
         return totalPowerConsumed;
     }
 
-
-    public int getMaxConsumptionAllowed() {
-        return ( getTotalMainCorridors() * Constants.MAIN_CORRIDOR_ALLOWANCE)
-                + (getTotalSubCorridors() * Constants.SUB_CORRIDOR_ALLOWANCE);
+    @Override
+    public int maxConsumptionAllowed() {
+        return (totalMainCorridors() * Constants.MAIN_CORRIDOR_ALLOWANCE)
+                + (totalSubCorridors() * Constants.SUB_CORRIDOR_ALLOWANCE);
     }
 
     @Override
-    public int getTotalMainCorridors () {
-        int mainCorridors = 0;
-        for (Corridor corridor : hotel.getFloorList().get(0).getCorridorList()) {
-            if (corridor instanceof MainCorridor) mainCorridors += 1;
-        }
-        return mainCorridors * hotel.getFloorList().size();
+    public int totalMainCorridors() {
+        return mainCorridorsPerFloor() * totalFloors();
     }
 
     @Override
-    public int getTotalSubCorridors () {
-        int subCorridors = 0;
-        for (Corridor corridor : hotel.getFloorList().get(0).getCorridorList()) {
-            if (corridor instanceof SubCorridor) subCorridors += 1;
-        }
-        return subCorridors * hotel.getFloorList().size();
+    public int totalSubCorridors() {
+        return subCorridorsPerFloor() * totalFloors();
     }
+
+    private boolean isMainCorridor(Corridor corridor) {
+        return Constants.IS_MAIN_CORRIDOR.test(corridor);
+    }
+
+    private boolean isSubCorridor(Corridor corridor) {
+        return !isMainCorridor(corridor);
+    }
+
+    private int mainCorridorsPerFloor() {
+        return getFirstFloor().getMainCorridorsList().size();
+    }
+
+    private int subCorridorsPerFloor() {
+        return getFirstFloor().getSubCorridorsList().size();
+    }
+
+    private Floor getFirstFloor() {
+        return hotel.getFloorList().get(0);
+    }
+
+    private int totalFloors() {
+        return hotel.getFloorList().size();
+    }
+
+
 }
