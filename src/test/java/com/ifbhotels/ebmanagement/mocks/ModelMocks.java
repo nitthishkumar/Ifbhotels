@@ -5,22 +5,18 @@ import com.ifbhotels.ebmanagement.models.data.Movement;
 import com.ifbhotels.ebmanagement.models.electricaldevices.AC;
 import com.ifbhotels.ebmanagement.models.electricaldevices.ElectricalDevice;
 import com.ifbhotels.ebmanagement.models.electricaldevices.Light;
-import com.ifbhotels.ebmanagement.models.structures.Corridor;
-import com.ifbhotels.ebmanagement.models.structures.Floor;
-import com.ifbhotels.ebmanagement.models.structures.MainCorridor;
-import com.ifbhotels.ebmanagement.models.structures.SubCorridor;
+import com.ifbhotels.ebmanagement.models.structures.*;
 import lombok.Getter;
 
 import java.util.Arrays;
-import java.util.List;
 
-import static com.ifbhotels.ebmanagement.constants.ElectricalUnitConstants.AC_CONSUMPTION;
-import static com.ifbhotels.ebmanagement.constants.ElectricalUnitConstants.LIGHT_CONSUMPTION;
+import static com.ifbhotels.ebmanagement.constants.Constants.AC_CONSUMPTION;
+import static com.ifbhotels.ebmanagement.constants.Constants.LIGHT_CONSUMPTION;
 
 public class ModelMocks {
 
     @Getter
-    public static final ElectricalDevice electricalDevice = new ElectricalDevice() {
+    public static final ElectricalDevice electricalDevice = new ElectricalDevice(1) {
 
         private DeviceState deviceState = DeviceState.ON;
         private int consumptionCost = 1;
@@ -62,8 +58,12 @@ public class ModelMocks {
     public static final Corridor corridor = mainCorridor;
 
     @Getter
-    public static Floor floor = new Floor(11, Arrays.asList(mainCorridor, subCorridor));
+    public static Floor floor = new Floor(1, Arrays.asList(mainCorridor, subCorridor));
 
     @Getter
     public static Movement movement = new Movement(floor, corridor);
+
+    @Getter
+    public static final Hotel hotel = new Hotel(Arrays.asList(floor, floor));
+
 }

@@ -1,9 +1,11 @@
 package com.ifbhotels.ebmanagement.models.structures;
 
+import com.ifbhotels.ebmanagement.constants.Constants;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +40,25 @@ public class Floor {
                 .append("\n"));
 
         return floorAsString.toString();
+    }
+
+    public List<MainCorridor> getMainCorridorsList() {
+        List<MainCorridor> mainCorridorList = new ArrayList<>();
+        corridorList.stream()
+                .filter(Constants.IS_MAIN_CORRIDOR)
+                .forEach(corridor -> mainCorridorList.add((MainCorridor) corridor) );
+
+        return mainCorridorList;
+    }
+
+    public List<SubCorridor> getSubCorridorsList() {
+        List<SubCorridor> subCorridorList = new ArrayList<>();
+        corridorList.stream()
+                .filter(Constants.IS_MAIN_CORRIDOR.negate())
+                .forEach(corridor -> subCorridorList.add((SubCorridor) corridor));
+
+        return subCorridorList;
+
     }
 
     public static class FloorBuilder {

@@ -1,6 +1,6 @@
 package com.ifbhotels.ebmanagement.models.electricaldevices;
 
-import com.ifbhotels.ebmanagement.constants.ElectricalUnitConstants;
+import com.ifbhotels.ebmanagement.constants.Constants;
 import com.ifbhotels.ebmanagement.enums.DeviceState;
 import junit.framework.TestCase;
 
@@ -10,7 +10,7 @@ public class ACTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        acInstance = new AC(11, DeviceState.OFF, ElectricalUnitConstants.AC_CONSUMPTION);
+        acInstance = new AC(11, DeviceState.OFF, Constants.AC_CONSUMPTION);
     }
 
     public void testId() {
@@ -26,7 +26,7 @@ public class ACTest extends TestCase {
     }
 
     public void testACConsumption () {
-        assertEquals(ElectricalUnitConstants.AC_CONSUMPTION, acInstance.getConsumptionCost());
+        assertEquals(Constants.AC_CONSUMPTION, acInstance.getConsumptionCost());
     }
 
     public void testToString() {

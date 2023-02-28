@@ -1,37 +1,53 @@
 package com.ifbhotels.ebmanagement.services;
 
 import com.ifbhotels.ebmanagement.enums.DeviceState;
+import com.ifbhotels.ebmanagement.enums.StorageServiceType;
 import com.ifbhotels.ebmanagement.exceptions.ConsumptionLimitExceededException;
-import com.ifbhotels.ebmanagement.mocks.ElectricalServiceMock;
 import com.ifbhotels.ebmanagement.mocks.ModelMocks;
-import com.ifbhotels.ebmanagement.models.electricaldevices.AC;
-import com.ifbhotels.ebmanagement.models.electricaldevices.Light;
+import com.ifbhotels.ebmanagement.services.storage.StorageService;
+import com.ifbhotels.ebmanagement.services.storage.StorageServiceFactory;
 import junit.framework.TestCase;
 
 public class ElectricalServiceTest extends TestCase {
-    
+
     private ElectricalService electricalService;
+    private StorageService storageService;
 
     @Override
     protected void setUp() throws Exception {
-        electricalService = new ElectricalServiceMock();
+        super.setUp();
+        electricalService = new ElectricalService();
+        storageService = StorageServiceFactory.getStorageService(StorageServiceType.SIMPLE_STORAGE_TYPE);
+        storageService.setHotel(ModelMocks.hotel);
     }
 
-
-    public void testAC() throws ConsumptionLimitExceededException {
-        AC ac = ModelMocks.getAC();
-        electricalService.turnOnAC(ac);
-        assertEquals(DeviceState.ON, ac.getDeviceState());
-        electricalService.turnOffAC(ac);
-        assertEquals(DeviceState.OFF, ac.getDeviceState());
+    public void testGetLight() {
+        assertEquals(ModelMocks.getLight(),
+                electricalService.getLight(ModelMocks.getLight().getId(), ModelMocks.getLight().getDeviceState()));
     }
 
-    public void testLight() throws ConsumptionLimitExceededException {
-        Light light = ModelMocks.getLight();
-        electricalService.turnOnLight(light);
-        assertEquals(DeviceState.ON, light.getDeviceState());
-        electricalService.turnOffLight(light);
-        assertEquals(DeviceState.OFF, light.getDeviceState());
+    public void testGetAC() {
+        assertEquals(ModelMocks.getAC(),
+                electricalService.getAC(ModelMocks.getAC().getId(), ModelMocks.getAC().getDeviceState()));
     }
 
+    public void testTurnOnAC() throws ConsumptionLimitExceededException {
+        electricalService.turnOnAC(ModelMocks.aC);
+        assertEquals(ModelMocks.getAC().getDeviceState(), DeviceState.ON);
+    }
+
+    public void testTurnOffAC() {
+        electricalService.turnOffAC(ModelMocks.aC);
+        assertEquals(ModelMocks.getAC().getDeviceState(), DeviceState.OFF);
+    }
+
+    public void testTurnOnLight() throws ConsumptionLimitExceededException {
+        electricalService.turnOnLight(ModelMocks.light);
+        assertEquals(ModelMocks.getLight().getDeviceState(), DeviceState.ON);
+    }
+
+    public void testTurnOffLight() {
+        electricalService.turnOffLight(ModelMocks.light);
+        assertEquals(ModelMocks.getLight().getDeviceState(), DeviceState.OFF);
+    }
 }

@@ -1,6 +1,6 @@
 package com.ifbhotels.ebmanagement.models.structures;
 
-import com.ifbhotels.ebmanagement.constants.ElectricalUnitConstants;
+import com.ifbhotels.ebmanagement.constants.Constants;
 import com.ifbhotels.ebmanagement.enums.DeviceState;
 import com.ifbhotels.ebmanagement.models.electricaldevices.AC;
 import com.ifbhotels.ebmanagement.models.electricaldevices.Light;
@@ -16,7 +16,7 @@ public class CorridorTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        corridorInstance = new Corridor() {
+        corridorInstance = new Corridor(121) {
             @NonNull @Getter @Setter
             private int id;
             @NonNull @Getter @Setter
@@ -27,15 +27,15 @@ public class CorridorTest extends TestCase {
     }
 
     public void testCorridorLight () {
-        corridorInstance.setLight(new Light(1, DeviceState.ON, ElectricalUnitConstants.LIGHT_CONSUMPTION));
+        corridorInstance.setLight(new Light(1, DeviceState.ON, Constants.LIGHT_CONSUMPTION));
         assertEquals(DeviceState.ON, corridorInstance.getLight().getDeviceState());
-        assertEquals(ElectricalUnitConstants.LIGHT_CONSUMPTION, corridorInstance.getLight().getConsumptionCost());
+        assertEquals(Constants.LIGHT_CONSUMPTION, corridorInstance.getLight().getConsumptionCost());
     }
 
     public void testCorridorAC () {
-        corridorInstance.setAC(new AC(1, DeviceState.ON, ElectricalUnitConstants.AC_CONSUMPTION));
+        corridorInstance.setAC(new AC(1, DeviceState.ON, Constants.AC_CONSUMPTION));
         assertEquals(DeviceState.ON, corridorInstance.getAC().getDeviceState());
-        assertEquals(ElectricalUnitConstants.AC_CONSUMPTION, corridorInstance.getAC().getConsumptionCost());
+        assertEquals(Constants.AC_CONSUMPTION, corridorInstance.getAC().getConsumptionCost());
     }
 
     

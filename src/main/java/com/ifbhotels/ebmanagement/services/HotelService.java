@@ -1,15 +1,19 @@
 package com.ifbhotels.ebmanagement.services;
 
-import com.ifbhotels.ebmanagement.constants.ElectricalUnitConstants;
+import com.ifbhotels.ebmanagement.constants.Constants;
 import com.ifbhotels.ebmanagement.enums.DeviceState;
 import com.ifbhotels.ebmanagement.exceptions.ConsumptionLimitExceededException;
 import com.ifbhotels.ebmanagement.models.data.Movement;
 import com.ifbhotels.ebmanagement.models.electricaldevices.AC;
 import com.ifbhotels.ebmanagement.models.electricaldevices.ElectricalDevice;
 import com.ifbhotels.ebmanagement.models.structures.*;
+import com.ifbhotels.ebmanagement.services.storage.StorageService;
+import com.ifbhotels.ebmanagement.services.storage.StorageServiceFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ifbhotels.ebmanagement.enums.StorageServiceType.SIMPLE_STORAGE_TYPE;
 
 public class HotelService {
 
@@ -18,11 +22,11 @@ public class HotelService {
     private final ElectricalService electricalService;
 
     public HotelService() {
-        storageService = StorageService.getInstance();
+        storageService = StorageServiceFactory.getStorageService(SIMPLE_STORAGE_TYPE);
         electricalService = new ElectricalService();
     }
 
-    public Hotel createHotel (int floors,
+    public Hotel createHotel(int floors,
                              int mainCorridorPerFloor,
                              int subCorridorPerFloor) {
         storageService.setHotel(new Hotel(createFloors(floors,
@@ -87,21 +91,21 @@ public class HotelService {
                 electricalService.getAC(1, DeviceState.ON) );
     }
 
-    public void turnOnAC (Movement movement)
+    public void turnOnAC(Movement movement)
             throws ConsumptionLimitExceededException {
         electricalService.turnOnAC(movement.getCorridor().getAC());
     }
 
-    public void turnOnLight (Movement movement)
+    public void turnOnLight(Movement movement)
             throws ConsumptionLimitExceededException {
         electricalService.turnOnLight(movement.getCorridor().getLight());
     }
 
-    public void turnOffAC (Movement movement) {
+    public void turnOffAC(Movement movement) {
         electricalService.turnOffAC(movement.getCorridor().getAC());
     }
 
-    public void turnOffLight (Movement movement) {
+    public void turnOffLight(Movement movement) {
         electricalService.turnOffLight(movement.getCorridor().getLight());
     }
 
@@ -109,11 +113,11 @@ public class HotelService {
         return storageService.getFloor(floorId);
     }
 
-    public MainCorridor getMainCorridor (Floor floor, int mainCorridorId) {
+    public MainCorridor getMainCorridor(Floor floor, int mainCorridorId) {
         return storageService.getMainCorridor(floor, mainCorridorId);
     }
 
-    public SubCorridor getSubCorridor (Floor floor, int subCorridorId) {
+    public SubCorridor getSubCorridor(Floor floor, int subCorridorId) {
         return storageService.getSubCorridor(floor,subCorridorId);
     }
 
@@ -125,12 +129,12 @@ public class HotelService {
         return storageService.getTotalPowerConsumed();
     }
 
-    public int reduceConsumptionCostFor (ElectricalDevice device) {
+    public int reduceConsumptionCostFor(ElectricalDevice device) {
         device.setDeviceState(DeviceState.OFF);
         if (device instanceof AC)
-            storageService.reduceConsumptionCost(ElectricalUnitConstants.AC_CONSUMPTION);
+            storageService.reduceConsumptionCost(Constants.AC_CONSUMPTION);
         else
-            storageService.reduceConsumptionCost(ElectricalUnitConstants.LIGHT_CONSUMPTION);
+            storageService.reduceConsumptionCost(Constants.LIGHT_CONSUMPTION);
         return storageService.getTotalPowerConsumed();
     }
 }
