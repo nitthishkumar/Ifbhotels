@@ -1,6 +1,6 @@
 package com.ifbhotels.ebmanagement.models.structures;
 
-import com.ifbhotels.ebmanagement.constants.ElectricalUnitConstants;
+import com.ifbhotels.ebmanagement.constants.Constants;
 import com.ifbhotels.ebmanagement.enums.DeviceState;
 import com.ifbhotels.ebmanagement.models.electricaldevices.AC;
 import com.ifbhotels.ebmanagement.models.electricaldevices.Light;
@@ -18,14 +18,14 @@ public class MainCorridorTest extends TestCase {
     }
 
     public void testMainCorridorLight () {
-        mainCorridor.setLight(new Light(1, DeviceState.ON, ElectricalUnitConstants.LIGHT_CONSUMPTION));
+        mainCorridor.setLight(new Light(1, DeviceState.ON, Constants.LIGHT_CONSUMPTION));
         assertEquals(DeviceState.ON, mainCorridor.getLight().getDeviceState());
-        assertEquals(ElectricalUnitConstants.LIGHT_CONSUMPTION, mainCorridor.getLight().getConsumptionCost());
+        assertEquals(Constants.LIGHT_CONSUMPTION, mainCorridor.getLight().getConsumptionCost());
     }
 
     public void testMainCorridorAC () {
-        mainCorridor.setAC(new AC(1, DeviceState.ON, ElectricalUnitConstants.AC_CONSUMPTION));
+        mainCorridor.setAC(new AC(1, DeviceState.ON, Constants.AC_CONSUMPTION));
         assertEquals(DeviceState.ON, mainCorridor.getAC().getDeviceState());
-        assertEquals(ElectricalUnitConstants.AC_CONSUMPTION, mainCorridor.getAC().getConsumptionCost());
+        assertEquals(Constants.AC_CONSUMPTION, mainCorridor.getAC().getConsumptionCost());
     }
 }

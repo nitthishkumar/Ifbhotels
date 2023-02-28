@@ -13,8 +13,8 @@ import lombok.Getter;
 
 import java.util.Arrays;
 
-import static com.ifbhotels.ebmanagement.constants.ElectricalUnitConstants.AC_CONSUMPTION;
-import static com.ifbhotels.ebmanagement.constants.ElectricalUnitConstants.LIGHT_CONSUMPTION;
+import static com.ifbhotels.ebmanagement.constants.Constants.AC_CONSUMPTION;
+import static com.ifbhotels.ebmanagement.constants.Constants.LIGHT_CONSUMPTION;
 
 public class ModelMocks {
 

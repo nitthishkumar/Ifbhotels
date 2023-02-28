@@ -1,15 +1,15 @@
-package com.ifbhotels.ebmanagement.services;
+package com.ifbhotels.ebmanagement.services.storage;
 
-import com.ifbhotels.ebmanagement.constants.ElectricalUnitConstants;
+import com.ifbhotels.ebmanagement.constants.Constants;
 import com.ifbhotels.ebmanagement.exceptions.ConsumptionLimitExceededException;
 import com.ifbhotels.ebmanagement.models.structures.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-public class StorageService {
+public class SimpleStorageService implements StorageService {
 
-    private static StorageService instance;
+    private static SimpleStorageService instance;
 
     @Getter @Setter
     private int totalPowerConsumed;
@@ -17,17 +17,19 @@ public class StorageService {
     @NonNull @Getter @Setter
     private Hotel hotel;
 
-    private StorageService() {}
+    private SimpleStorageService() {}
 
-    public static StorageService getInstance() {
-        if (instance == null) instance = new StorageService();
+    static StorageService getInstance() {
+        if (instance == null) instance = new SimpleStorageService();
         return instance;
     }
 
-    public Floor getFloor (int floorId) {
+    @Override
+    public Floor getFloor(int floorId) {
         return getHotel().getFloorList().get(floorId);
     }
 
+    @Override
     public MainCorridor getMainCorridor (Floor floor, int mainCorridorId) {
         for (Corridor corridor : floor.getCorridorList())
             if (corridor instanceof MainCorridor && corridor.getId() == mainCorridorId)
@@ -35,6 +37,7 @@ public class StorageService {
         throw new NullPointerException("Main Corridor with ID " + mainCorridorId + " not found");
     }
 
+    @Override
     public SubCorridor getSubCorridor (Floor floor, int subCorridorId) {
         for (Corridor corridor : floor.getCorridorList())
             if (corridor instanceof SubCorridor && corridor.getId() == subCorridorId)
@@ -42,11 +45,13 @@ public class StorageService {
         throw new NullPointerException("Sub Corridor with ID " + subCorridorId + " not found");
     }
 
+    @Override
     public boolean isConsumptionWithinLimits () {
         return totalPowerConsumed <= getMaxConsumptionAllowed();
     }
 
-    public int addConsumptionCost (int consumptionCost)
+    @Override
+    public int addConsumptionCost(int consumptionCost)
             throws ConsumptionLimitExceededException {
         totalPowerConsumed += consumptionCost;
         if (totalPowerConsumed + consumptionCost > getMaxConsumptionAllowed())
@@ -54,17 +59,20 @@ public class StorageService {
         return totalPowerConsumed;
     }
 
+    @Override
     public int reduceConsumptionCost (int reducedCost) {
         totalPowerConsumed -= reducedCost;
         return totalPowerConsumed;
     }
 
-    private int getMaxConsumptionAllowed() {
-        return ( getTotalMainCorridors() * ElectricalUnitConstants.MAIN_CORRIDOR_ALLOWANCE)
-                + (getTotalSubCorridors() * ElectricalUnitConstants.SUB_CORRIDOR_ALLOWANCE);
+
+    public int getMaxConsumptionAllowed() {
+        return ( getTotalMainCorridors() * Constants.MAIN_CORRIDOR_ALLOWANCE)
+                + (getTotalSubCorridors() * Constants.SUB_CORRIDOR_ALLOWANCE);
     }
 
-    private final int getTotalMainCorridors () {
+    @Override
+    public int getTotalMainCorridors () {
         int mainCorridors = 0;
         for (Corridor corridor : hotel.getFloorList().get(0).getCorridorList()) {
             if (corridor instanceof MainCorridor) mainCorridors += 1;
@@ -72,7 +80,8 @@ public class StorageService {
         return mainCorridors * hotel.getFloorList().size();
     }
 
-    private final int getTotalSubCorridors () {
+    @Override
+    public int getTotalSubCorridors () {
         int subCorridors = 0;
         for (Corridor corridor : hotel.getFloorList().get(0).getCorridorList()) {
             if (corridor instanceof SubCorridor) subCorridors += 1;

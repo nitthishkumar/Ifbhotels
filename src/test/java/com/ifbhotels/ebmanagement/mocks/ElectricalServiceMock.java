@@ -1,6 +1,5 @@
 package com.ifbhotels.ebmanagement.mocks;
 
-import com.ifbhotels.ebmanagement.constants.ElectricalUnitConstants;
 import com.ifbhotels.ebmanagement.enums.DeviceState;
 import com.ifbhotels.ebmanagement.exceptions.ConsumptionLimitExceededException;
 import com.ifbhotels.ebmanagement.models.electricaldevices.AC;

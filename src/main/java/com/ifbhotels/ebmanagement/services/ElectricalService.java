@@ -1,21 +1,24 @@
 package com.ifbhotels.ebmanagement.services;
 
-import com.ifbhotels.ebmanagement.constants.ElectricalUnitConstants;
+import com.ifbhotels.ebmanagement.constants.Constants;
 import com.ifbhotels.ebmanagement.enums.DeviceState;
 import com.ifbhotels.ebmanagement.exceptions.ConsumptionLimitExceededException;
 import com.ifbhotels.ebmanagement.models.electricaldevices.AC;
 import com.ifbhotels.ebmanagement.models.electricaldevices.Light;
+import com.ifbhotels.ebmanagement.services.storage.StorageService;
+import com.ifbhotels.ebmanagement.services.storage.StorageServiceFactory;
 
 public class ElectricalService {
 
-    private final StorageService storageService = StorageService.getInstance();
+    private final StorageService storageService =
+            StorageServiceFactory.getStorageService(Constants.SIMPLE_STORAGE_TYPE);
 
     public Light getLight (int lightId,
                            DeviceState deviceState) {
         return new Light.LightBuilder()
                 .setId(lightId)
                 .setDeviceState(deviceState)
-                .setConsumptionCost(ElectricalUnitConstants.LIGHT_CONSUMPTION)
+                .setConsumptionCost(Constants.LIGHT_CONSUMPTION)
                 .build();
     }
 
@@ -24,13 +27,13 @@ public class ElectricalService {
         return new AC.ACBuilder()
                 .setId(acID)
                 .setDeviceState(deviceState)
-                .setConsumptionCost(ElectricalUnitConstants.AC_CONSUMPTION)
+                .setConsumptionCost(Constants.AC_CONSUMPTION)
                 .build();
     }
 
     public void turnOnAC (AC ac)
             throws ConsumptionLimitExceededException {
-        storageService.addConsumptionCost(ElectricalUnitConstants.AC_CONSUMPTION);
+        storageService.addConsumptionCost(Constants.AC_CONSUMPTION);
         ac.setDeviceState(DeviceState.ON);
     }
 
@@ -40,7 +43,7 @@ public class ElectricalService {
 
     public void turnOnLight (Light light)
             throws ConsumptionLimitExceededException {
-        storageService.addConsumptionCost(ElectricalUnitConstants.LIGHT_CONSUMPTION);
+        storageService.addConsumptionCost(Constants.LIGHT_CONSUMPTION);
         light.setDeviceState(DeviceState.ON);
     }
 

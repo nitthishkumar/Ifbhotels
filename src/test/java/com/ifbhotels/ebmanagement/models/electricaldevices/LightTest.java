@@ -1,6 +1,6 @@
 package com.ifbhotels.ebmanagement.models.electricaldevices;
 
-import com.ifbhotels.ebmanagement.constants.ElectricalUnitConstants;
+import com.ifbhotels.ebmanagement.constants.Constants;
 import com.ifbhotels.ebmanagement.enums.DeviceState;
 import junit.framework.TestCase;
 
@@ -10,7 +10,7 @@ public class LightTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        lightInstance = new Light(1, DeviceState.OFF, ElectricalUnitConstants.LIGHT_CONSUMPTION);
+        lightInstance = new Light(1, DeviceState.OFF, Constants.LIGHT_CONSUMPTION);
     }
 
     public void testId() {
@@ -26,7 +26,7 @@ public class LightTest extends TestCase {
     }
 
     public void testLightConsumption () {
-        assertEquals(ElectricalUnitConstants.LIGHT_CONSUMPTION, lightInstance.getConsumptionCost());
+        assertEquals(Constants.LIGHT_CONSUMPTION, lightInstance.getConsumptionCost());
     }
 
     public void testToString() {

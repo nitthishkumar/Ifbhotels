@@ -1,24 +1,26 @@
 package com.ifbhotels.ebmanagement.services;
 
-import com.ifbhotels.ebmanagement.constants.ElectricalUnitConstants;
+import com.ifbhotels.ebmanagement.constants.Constants;
 import com.ifbhotels.ebmanagement.enums.DeviceState;
 import com.ifbhotels.ebmanagement.exceptions.ConsumptionLimitExceededException;
 import com.ifbhotels.ebmanagement.models.data.Movement;
 import com.ifbhotels.ebmanagement.models.electricaldevices.AC;
 import com.ifbhotels.ebmanagement.models.electricaldevices.ElectricalDevice;
 import com.ifbhotels.ebmanagement.models.structures.*;
+import com.ifbhotels.ebmanagement.services.storage.StorageService;
+import com.ifbhotels.ebmanagement.services.storage.StorageServiceFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HotelService {
 
-    private final StorageService storageService;
+    private StorageService storageService;
 
     private final ElectricalService electricalService;
 
     public HotelService() {
-        storageService = StorageService.getInstance();
+        storageService = StorageServiceFactory.getStorageService(Constants.SIMPLE_STORAGE_TYPE);
         electricalService = new ElectricalService();
     }
 
@@ -128,9 +130,9 @@ public class HotelService {
     public int reduceConsumptionCostFor (ElectricalDevice device) {
         device.setDeviceState(DeviceState.OFF);
         if (device instanceof AC)
-            storageService.reduceConsumptionCost(ElectricalUnitConstants.AC_CONSUMPTION);
+            storageService.reduceConsumptionCost(Constants.AC_CONSUMPTION);
         else
-            storageService.reduceConsumptionCost(ElectricalUnitConstants.LIGHT_CONSUMPTION);
+            storageService.reduceConsumptionCost(Constants.LIGHT_CONSUMPTION);
         return storageService.getTotalPowerConsumed();
     }
 }
