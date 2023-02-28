@@ -16,10 +16,10 @@ public class HotelController {
         hotelService = new HotelService();
     }
 
-    public void createHotel (int floors,
+    public Hotel createHotel(int floors,
                               int mainCorridorPerFloor,
                               int subCorridorPerFloor) {
-        hotelService.createHotel(floors,
+        return hotelService.createHotel(floors,
                 mainCorridorPerFloor,
                 subCorridorPerFloor);
     }

@@ -26,7 +26,7 @@ public class HotelService {
         electricalService = new ElectricalService();
     }
 
-    public Hotel createHotel (int floors,
+    public Hotel createHotel(int floors,
                              int mainCorridorPerFloor,
                              int subCorridorPerFloor) {
         storageService.setHotel(new Hotel(createFloors(floors,

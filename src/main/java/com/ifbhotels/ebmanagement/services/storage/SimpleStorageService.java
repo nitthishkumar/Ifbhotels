@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.util.NoSuchElementException;
+
 public class SimpleStorageService implements StorageService {
 
     private static SimpleStorageService instance;
@@ -26,7 +28,9 @@ public class SimpleStorageService implements StorageService {
 
     @Override
     public Floor getFloor(int floorId) {
-        return getHotel().getFloorList().get(floorId);
+        for (Floor floor : hotel.getFloorList())
+            if(floor.getId() == floorId) return floor;
+        throw new NoSuchElementException("Floor with ID : " + floorId + " does not exist");
     }
 
     @Override
@@ -55,7 +59,7 @@ public class SimpleStorageService implements StorageService {
             throws ConsumptionLimitExceededException {
         if (getTotalPowerConsumed() + consumptionCost > maxConsumptionAllowed())
             throw new ConsumptionLimitExceededException("Consumption limit exceeded by " +
-                    (getTotalPowerConsumed() - maxConsumptionAllowed()) + " units");
+                    (getTotalPowerConsumed() + consumptionCost - maxConsumptionAllowed()) + " units");
         setTotalPowerConsumed(getTotalPowerConsumed() + consumptionCost);
         return totalPowerConsumed;
     }

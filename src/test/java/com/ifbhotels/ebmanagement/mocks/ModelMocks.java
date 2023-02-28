@@ -5,10 +5,7 @@ import com.ifbhotels.ebmanagement.models.data.Movement;
 import com.ifbhotels.ebmanagement.models.electricaldevices.AC;
 import com.ifbhotels.ebmanagement.models.electricaldevices.ElectricalDevice;
 import com.ifbhotels.ebmanagement.models.electricaldevices.Light;
-import com.ifbhotels.ebmanagement.models.structures.Corridor;
-import com.ifbhotels.ebmanagement.models.structures.Floor;
-import com.ifbhotels.ebmanagement.models.structures.MainCorridor;
-import com.ifbhotels.ebmanagement.models.structures.SubCorridor;
+import com.ifbhotels.ebmanagement.models.structures.*;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -61,8 +58,12 @@ public class ModelMocks {
     public static final Corridor corridor = mainCorridor;
 
     @Getter
-    public static Floor floor = new Floor(11, Arrays.asList(mainCorridor, subCorridor));
+    public static Floor floor = new Floor(1, Arrays.asList(mainCorridor, subCorridor));
 
     @Getter
     public static Movement movement = new Movement(floor, corridor);
+
+    @Getter
+    public static final Hotel hotel = new Hotel(Arrays.asList(floor, floor));
+
 }
