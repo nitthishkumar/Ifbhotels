@@ -1,10 +1,10 @@
 package com.ifbhotels.ebmanagement.enums;
 
 public enum DeviceState {
-    ON("ON"),
-    OFF("OFF");
+    ON(),
+    OFF();
 
-    DeviceState(String deviceState) {}
+    DeviceState() {}
 
     @Override
     public String toString() {
