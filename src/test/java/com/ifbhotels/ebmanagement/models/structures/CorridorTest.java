@@ -16,7 +16,7 @@ public class CorridorTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        corridorInstance = new Corridor() {
+        corridorInstance = new Corridor(121) {
             @NonNull @Getter @Setter
             private int id;
             @NonNull @Getter @Setter

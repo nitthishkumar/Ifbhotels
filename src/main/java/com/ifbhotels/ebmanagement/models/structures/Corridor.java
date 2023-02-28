@@ -2,17 +2,22 @@ package com.ifbhotels.ebmanagement.models.structures;
 
 import com.ifbhotels.ebmanagement.models.electricaldevices.AC;
 import com.ifbhotels.ebmanagement.models.electricaldevices.Light;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
-public interface Corridor {
+public abstract class Corridor {
 
-    int getId();
+    @NonNull @Getter
+    private final int id;
 
-    Light getLight();
+    @NonNull @Getter @Setter
+    private Light light;
 
-    void setLight(Light light);
+    @NonNull @Getter @Setter
+    private AC aC;
 
-    AC getAC();
-
-    void setAC(AC ac);
-
+    protected Corridor(int id) {
+        this.id = id;
+    }
 }

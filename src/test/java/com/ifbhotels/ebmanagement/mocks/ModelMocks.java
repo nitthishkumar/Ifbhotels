@@ -12,7 +12,6 @@ import com.ifbhotels.ebmanagement.models.structures.SubCorridor;
 import lombok.Getter;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static com.ifbhotels.ebmanagement.constants.ElectricalUnitConstants.AC_CONSUMPTION;
 import static com.ifbhotels.ebmanagement.constants.ElectricalUnitConstants.LIGHT_CONSUMPTION;
@@ -20,7 +19,7 @@ import static com.ifbhotels.ebmanagement.constants.ElectricalUnitConstants.LIGHT
 public class ModelMocks {
 
     @Getter
-    public static final ElectricalDevice electricalDevice = new ElectricalDevice() {
+    public static final ElectricalDevice electricalDevice = new ElectricalDevice(1) {
 
         private DeviceState deviceState = DeviceState.ON;
         private int consumptionCost = 1;

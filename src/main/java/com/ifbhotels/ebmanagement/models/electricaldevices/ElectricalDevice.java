@@ -1,15 +1,22 @@
 package com.ifbhotels.ebmanagement.models.electricaldevices;
 
 import com.ifbhotels.ebmanagement.enums.DeviceState;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
-public interface ElectricalDevice {
+public abstract class ElectricalDevice {
 
-    DeviceState getDeviceState();
+    @NonNull @Getter
+    private final int id;
 
-    void setDeviceState (DeviceState deviceState);
+    @NonNull @Getter @Setter
+    private DeviceState deviceState;
 
-    int getConsumptionCost ();
+    @NonNull @Getter @Setter
+    private int consumptionCost;
 
-    void setConsumptionCost (int consumptionCost);
-
+    protected ElectricalDevice(int id) {
+        this.id = id;
+    }
 }

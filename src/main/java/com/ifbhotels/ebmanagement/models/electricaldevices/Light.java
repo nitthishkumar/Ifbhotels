@@ -7,57 +7,50 @@ import lombok.Setter;
 
 import java.util.Objects;
 
-public class Light implements ElectricalDevice {
+public class Light extends ElectricalDevice {
 
-    @NonNull @Getter
-    private final int id;
+    public Light (Light.LightBuilder builder) {
+        super(builder.id);
+        setConsumptionCost(builder.getConsumptionCost());
+        setDeviceState(builder.getDeviceState());
 
-    @NonNull @Getter @Setter
-    private DeviceState deviceState;
-
-    @NonNull @Getter @Setter
-    private int consumptionCost;
-
-    public Light (final int id, final DeviceState deviceState, final int consumptionCost) {
-        this.id = id;
-        this.deviceState = deviceState;
-        this.consumptionCost = consumptionCost;
     }
 
-    public Light (LightBuilder lightBuilder) {
-        this.id = lightBuilder.getId();
-        this.consumptionCost = lightBuilder.getConsumptionCost();
-        this.deviceState = lightBuilder.getDeviceState();
+    public Light (int id,
+               DeviceState deviceState,
+               int consumptionCost) {
+        super(id);
+        setConsumptionCost(consumptionCost);
+        setDeviceState(deviceState);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Light light = (Light) o;
-        return id == light.id;
+        Light other = (Light) o;
+        return this.getId() == other.getId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(getId());
     }
 
     @Override
     public String toString() {
-        return String.format("Light %d: %s", id, deviceState );
+        return String.format("Light %d: %s", getId(), getDeviceState() );
     }
 
     public static class LightBuilder {
 
-        @NonNull @Getter
+        @NonNull @Getter @Setter
         private int id;
-        @NonNull @Getter
+        @NonNull @Getter @Setter
         private DeviceState deviceState;
-        @NonNull @Getter
+        @NonNull @Getter @Setter
         private int consumptionCost;
 
-        public LightBuilder(){}
 
         public LightBuilder setId(int id) {
             this.id = id;

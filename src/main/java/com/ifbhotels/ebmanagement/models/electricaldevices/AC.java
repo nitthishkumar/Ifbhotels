@@ -1,56 +1,46 @@
 package com.ifbhotels.ebmanagement.models.electricaldevices;
 
 import com.ifbhotels.ebmanagement.enums.DeviceState;
-import com.ifbhotels.ebmanagement.models.structures.Hotel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
 import java.util.Objects;
 
-public class AC implements ElectricalDevice {
-
-    @NonNull @Getter
-    private final int id;
-
-    @NonNull @Getter @Setter
-    private DeviceState deviceState;
-
-    @NonNull @Getter @Setter
-    private int consumptionCost;
+public class AC extends ElectricalDevice {
 
     public AC (ACBuilder builder) {
-        this.id = builder.id;
-        this.deviceState = builder.deviceState;
-        this.consumptionCost = builder.consumptionCost;
+        super(builder.id);
+        setConsumptionCost(builder.getConsumptionCost());
+        setDeviceState(builder.getDeviceState());
+
     }
 
     public AC (int id,
                DeviceState deviceState,
                int consumptionCost) {
-        this.id = id;
-        this.consumptionCost = consumptionCost;
-        this.deviceState = deviceState;
+        super(id);
+        setConsumptionCost(consumptionCost);
+        setDeviceState(deviceState);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AC ac = (AC) o;
-        return id == ac.id;
+        AC other = (AC) o;
+        return this.getId() == other.getId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(getId());
     }
 
     @Override
     public String toString() {
-        return String.format("AC %d: %s", id, deviceState );
+        return String.format("AC %d: %s", getId(), getDeviceState() );
     }
-
 
     public static class ACBuilder {
 
@@ -60,7 +50,6 @@ public class AC implements ElectricalDevice {
         private DeviceState deviceState;
         @NonNull @Getter
         private int consumptionCost;
-
 
         public ACBuilder setId(int id) {
             this.id = id;
